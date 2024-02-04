@@ -1,0 +1,28 @@
+services:
+  practice-nest-microservice:
+    build:
+      context: .
+      dockerfile: ./apps/practice-nest-microservice/Dockerfile
+      target: development
+    command: npm run start:dev practice-nest-microservice
+    env_file:
+      - ./.env
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - '9004:9004'
+
+  user:
+    build:
+      context: .
+      dockerfile: ./apps/user/Dockerfile
+      target: development
+    command: npm run start:dev user
+    env_file:
+      - ./.env
+    depends_on:
+      - practice-nest-microservice
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
